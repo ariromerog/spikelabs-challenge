@@ -1,7 +1,7 @@
 const config = {
   apiGateway: {
     REGION: "sa-east-1",
-    URL: "https:/64wqldwc14.execute-api.sa-east-1.amazonaws.com/dev",
+    URL: "https://64wqldwc14.execute-api.sa-east-1.amazonaws.com/dev",
   },
   cognito: {
     REGION: "sa-east-1",

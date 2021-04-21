@@ -8,3 +8,15 @@
   font-weight: 600;
 }
 
+@media all and (min-width: 480px) {
+  .CreateOrder {
+    padding: 60px 0;
+    margin: 0 auto;
+    max-width: 400px;
+  }
+
+  .CreateOrder form {
+    padding: 20px 0;
+  }
+}
+

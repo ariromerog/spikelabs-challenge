@@ -55,9 +55,13 @@ function App() {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Nav activeKey={window.location.pathname}>
-
           {isAuthenticated ? (
-            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            <>
+              <LinkContainer to="/orders">
+                <Nav.Link>Mis pedidos</Nav.Link>
+              </LinkContainer>
+              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            </>
           ) : (
             <>
               <LinkContainer to="/signup">
