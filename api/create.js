@@ -8,7 +8,7 @@ export const main = handler(async (event, context) =>  {
     TableName: process.env.tableName,
     Item: {
       userId: event.requestContext.identity.cognitoIdentityId,
-      Id: uuid.v1(),
+      orderId: uuid.v1(),
       origAddress: data.origAddress,
       origComputedAddress: data.origComputedAddress,
       origLat: data.origLat,

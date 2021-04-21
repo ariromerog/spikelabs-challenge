@@ -6,6 +6,7 @@ import Alert from "react-bootstrap/Alert";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { API } from "aws-amplify";
 import { useAppContext } from "../libs/contextlib";
+import { onError } from "../libs/errorlib";
 import { useFormFields } from "../libs/hookslib";
 import { FaMotorcycle } from "react-icons/fa";
 import "./Home.css";
@@ -17,8 +18,10 @@ export default function Home() {
   // -------------------------------------------------------------------------
   const { isAuthenticated } = useAppContext();
   const [error, setError] = useState(false);
+  const [sent, setSent] = useState(false);
   const [distance, setDistance] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [fields, setFields] = useFormFields({
     origAddress: "",
     destAddress: "",
@@ -102,9 +105,18 @@ export default function Home() {
   // Enviar datos a DynamoDB
   // -------------------------------------------------------------------------
 
-  function handleConfirm() {
-    console.log("** enviando datos a dyndb! **");
-    console.log(row);
+  async function handleConfirm() {
+    setIsCreating(true); 
+    try {
+      await API.post("orders", "/orders", {
+        body: row
+      });
+    } catch (e) {
+      onError(e);
+      setIsCreating(false);
+    }
+    setIsCreating(false);
+    setSent(true); 
   }
 
   // -------------------------------------------------------------------------
@@ -112,7 +124,13 @@ export default function Home() {
   // -------------------------------------------------------------------------
 
   function renderForm() {
-    return (
+    return sent ? (
+      <div className="CreateOrder">
+      <Alert variant="success" className="text-center">
+        <h1>Su Pedido ha sido creado!</h1>
+      </Alert>
+      </div>
+    ) : (
     <div className="CreateOrder">
 
       <Form onSubmit={handleSubmit}>
@@ -151,11 +169,8 @@ export default function Home() {
           </Alert>
       )}
 
-      <Button block size="lg" variant="success" disabled={!distance || isLoading} onClick={handleConfirm}>
-        Enviar
-      </Button> 
-      <Button block type="reset" variant="secondary">
-        Limpiar
+      <Button block size="lg" variant="success" disabled={!distance || isCreating} onClick={handleConfirm}>
+         { isCreating ? (<>Enviando...</>) : (<>Enviar</>) } 
       </Button> 
     </div>
     );
