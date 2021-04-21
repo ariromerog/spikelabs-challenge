@@ -57,3 +57,6 @@ functions:
           authorizer: aws_iam
           cors: true
 
+resources:
+  - ${file(resources/api-gateway-errors.yml)}
+
